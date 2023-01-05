@@ -3,13 +3,18 @@ package org.example.lesson8filter;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.example.lesson8filter.flt.CheckCookieFilter;
 import org.example.lesson8filter.svc.CalcHistory;
 import org.example.lesson8filter.svc.CalcSqlHistory;
 import org.example.lesson8filter.svt.*;
 
+import javax.servlet.DispatcherType;
 import java.sql.Connection;
+import java.util.EnumSet;
 
 public class ServerApp {
+
+    private static final EnumSet<DispatcherType> ft = EnumSet.of(DispatcherType.REQUEST);
 
     // http://localhost:8080/calc?x=1&y=3
     // http://localhost:8080/calc?x=1&y=4
@@ -48,6 +53,8 @@ public class ServerApp {
         handler.addServlet(new ServletHolder(historyServlet), "/history");
         handler.addServlet(SetCookieServlet.class, "/login");
         handler.addServlet(RemoveCookieServlet.class, "/logout");
+        handler.addFilter(CheckCookieFilter.class, "/calc", ft );
+        handler.addFilter(CheckCookieFilter.class, "/history", ft );
 
         server.setHandler(handler);
 

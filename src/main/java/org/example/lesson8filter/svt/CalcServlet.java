@@ -47,17 +47,10 @@ public class CalcServlet extends HttpServlet {
                     // compare check with check in the DB
                     // delete check from db (not to deal with duplicate stuff)
                     String userid = c.getValue();
-                    System.out.println(userid);
-                    String xs = req.getParameter("x"); // null
-                    System.out.println(req.getQueryString()); // x=5&y=7
-                    Map<String, String[]> allParameters = req.getParameterMap();
-                    Optional<String> oy = safeGet(req, "y");
-                    Optional<Integer> oyi = oy.flatMap(x -> safeToInt(x));
-//    if (oyi.isPresent()) oyi.get();
-//    oyi.ifPresent(i -> System.out.println(i));
-
-                    int y = oyi.orElse(0); // not proper handling
+                    String xs = req.getParameter("x");
+                    String ys = req.getParameter("y");
                     int x = Integer.parseInt(xs);
+                    int y = Integer.parseInt(ys);
                     int z = x + y;
 
                     try (PrintWriter w = resp.getWriter()) {
@@ -76,11 +69,6 @@ public class CalcServlet extends HttpServlet {
                     }
                 }
         );
-
-//        if(cs != null) {    // ->  Optional
-//            Optional<Cookie> oc = Arrays.stream(cs).filter(c -> c.getName().equals("id")).findFirst();
-//        }
-
     }
 
 }
